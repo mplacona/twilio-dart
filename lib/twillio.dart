@@ -15,7 +15,8 @@ class Twillio {
         this._accountSid = key;
         this._authToken = authToken;
         this._apiVersion = version;
-        _httpClient = (httpClient == null) ? http.Request : httpClient;
+        print(httpClient.toString());
+        _httpClient = (httpClient == null) ? new http.Client() : httpClient;
     }
 
     Future sendSMS(String body, String from, String to, [String mediaUrl = ""]) {
@@ -35,12 +36,15 @@ class Twillio {
         //return http.post(buildBaseUrl(resource).toString(), body: body).then((response) => response.body);
         var url = buildBaseUrl(resource).toString();
         //var url = "http://httpbin.org/post";
-        var client = new http.Client();
         var request = new http.Request('POST', Uri.parse(url));
         //var body = {'Body':'this is a test', 'To':'447590566866', 'From':'441276300056', 'MediaUrl':'http://www.example.com/hearts.png'};
         request.headers[HttpHeaders.USER_AGENT] = 'twilio-dart';
         request.bodyFields = body;
-        return client.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString())).catchError((error) => error.toString());
+        //print(new http.Client().toString());
+        //print(_httpClient.toString());
+        //return new http.Client().send(request).then((response) => response.request).catchError((error)=>print(error.toString()));
+        return this._httpClient.send(request).then((response) => response.request).catchError((error)=>print(error.toString()));
+        //return client.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString())).catchError((error) => error.toString());
     }
 
     String buildBaseUrl(String resource) {
