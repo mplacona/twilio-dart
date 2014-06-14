@@ -16,9 +16,6 @@ class Twillio {
         this._authToken = authToken;
         this._apiVersion = version;
         _httpClient = (httpClient == null) ? new http.Client() : httpClient; 
-        
-        http.Request req = new http.Request('POST', Uri.parse('http://www.google.com'));
-        var s = _httpClient.send(req).then((value) => print(value));
     }
 
     Future sendSMS(String body, String from, String to, [String mediaUrl = ""]) {
