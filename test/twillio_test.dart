@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'fixtures/status_messages.dart';
+import 'fixtures/expected_messages.dart';
 import 'package:twillio_dart/resources/accounts.dart';
 import 'package:twillio_dart/resources/messages.dart';
 import 'package:http/testing.dart';
@@ -43,7 +44,7 @@ void main() {
 
         test("Send SMS errors with wrong account", () {
             var mockHttpClient = new MockClient((request) {
-                return new http.Response(message401, 200, headers: {
+                return new http.Response(message401, 401, headers: {
                     'content-type': 'application/json'
                 });
             });
@@ -51,16 +52,22 @@ void main() {
             var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
             Future<http.Request> future;
 
-            var response = JSON.encode({
-                "code": 20003,
-                "detail": "Your AccountSid or AuthToken was incorrect.",
-                "message": "Authenticate",
-                "more_info": "https://www.twilio.com/docs/errors/20003",
-                "status": 401
-            });
+            future = twillio.sendSMS("+112345678", "+44123456789", "this is a test").then((value) => value.toString());
+            expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
+        });
 
-            future = twillio.sendSMS("+112345678", "+447590566866", "this is a test").then((value) => value.toString());
-            expect(future.then((value) => JSON.decode(value)), completion(equals(JSON.decode(response))));
+        test("Send SMS successfuly sent", () {
+            var mockHttpClient = new MockClient((request) {
+                return new http.Response(messageSMSSent, 200, headers: {
+                    'content-type': 'application/json'
+                });
+            });
+            
+            var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
+            Future<http.Request> future;
+
+            future = twillio.sendSMS("+441234567890", "+44123456789", "this is a test").then((value) => value.toString());
+            expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("SMb938df8bb21a4b7faf240e5c99e6efbd")));
         });
 
     });

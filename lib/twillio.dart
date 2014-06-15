@@ -18,14 +18,13 @@ class Twillio {
         _httpClient = (httpClient == null) ? new http.Client() : httpClient; 
     }
 
-    Future sendSMS(String body, String from, String to, [String mediaUrl = ""]) {
+    Future sendSMS(String from, String to, String body, [String mediaUrl = null]) {
         var messages = new Messages(this._accountSid);
         Map<String, String> _parameters;
         _parameters = {
             'From': from,
             'To': to,
-            'Body': body,
-            'MediaUrl': mediaUrl
+            'Body': body
         };
         return _apiRequest(messages.resource, _parameters).then((msg) => msg);
     }
