@@ -52,7 +52,7 @@ void main() {
             var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
             Future<http.Request> future;
 
-            future = twillio.sendSMS("+112345678", "+44123456789", "this is a test").then((value) => value.toString());
+            future = twillio.sendSMS("+112345678", "+44123456789", "this is a test").then((value) => value);
             expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
         });
 
@@ -66,7 +66,7 @@ void main() {
             var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
             Future<http.Request> future;
 
-            future = twillio.sendSMS("+441234567890", "+44123456789", "this is a test").then((value) => value.toString());
+            future = twillio.sendSMS("+441234567890", "+44123456789", "this is a test").then((value) => value);
             expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("SMb938df8bb21a4b7faf240e5c99e6efbd")));
         });
 
