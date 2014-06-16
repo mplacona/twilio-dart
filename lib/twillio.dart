@@ -10,31 +10,38 @@ class Twillio {
     String _authToken;
     String _apiVersion;
     http.Client _httpClient;
+    Messages messages;
 
     Twillio(String key, String authToken, String version, [http.Client httpClient = null]) {
         this._accountSid = key;
         this._authToken = authToken;
         this._apiVersion = version;
         _httpClient = (httpClient == null) ? new http.Client() : httpClient; 
+        messages = new Messages(_accountSid);
     }
 
     Future sendSMS(String from, String to, String body, [String mediaUrl = null]) {
-        var messages = new Messages(this._accountSid);
         Map<String, String> _parameters;
         _parameters = {
             'From': from,
             'To': to,
             'Body': body
         };
-        return _apiRequest(messages.resource, _parameters).then((msg) => msg);
+        return _apiRequest(messages.getPostResource(), 'POST', _parameters).then((msg) => msg);
+    }
+    
+    Future readSMS(String messageSid){
+        return _apiRequest(messages.getGetResource(messageSid)).then((msg) => msg);
     }
 
 
-    Future _apiRequest(String resource, [Map<String, String> body]) {
+    Future _apiRequest(String resource, [String verb = 'GET', Map<String, String> body = null]) {
         var url = buildBaseUrl(resource).toString();
-        var request = new http.Request('POST', Uri.parse(url));
+        var request = new http.Request(verb, Uri.parse(url));
         request.headers[HttpHeaders.USER_AGENT] = 'twilio-dart';
-        request.bodyFields = body;
+        if(body != null){
+            request.bodyFields = body;
+        }
         return this._httpClient.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString()));
     }
 
