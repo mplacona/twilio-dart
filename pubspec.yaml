@@ -1,5 +1,5 @@
 name: twillio_dart
-version: 0.0.1
+version: 0.0.3
 author: Marcos Placona <hi@placona.co.uk>
 description: An implementation of the Twillio API for Dart
 homepage: http://mplacona.github.io/twillio
