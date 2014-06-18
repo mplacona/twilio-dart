@@ -79,7 +79,7 @@ void main() {
                 var twillio = new Twillio(_accountSid, _authToken, _apiVersion);
                 var messages = new Messages(_accountSid);
                 var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages/SMb938df8bb21a4b7faf240e5c99e6efbd.json";
-                expect(twillio.buildBaseUrl(messages.getGetResource(_messageSid)), equals(url));
+                expect(twillio.buildBaseUrl(messages.getGetMessageResource(_messageSid)), equals(url));
             });
             test("Read SMS errors with wrong account", () {
                 var mockHttpClient = new MockClient((request) {
@@ -107,6 +107,42 @@ void main() {
 
                 future = twillio.readSMS(_messageSid).then((value) => value);
                 expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("this is a test")));
+            });
+        });
+        
+        group('Read SMS List :: ', () {
+            test("Read SMS List URL is created correctly", () {
+                var twillio = new Twillio(_accountSid, _authToken, _apiVersion);
+                var messages = new Messages(_accountSid);
+                var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json";
+                expect(twillio.buildBaseUrl(messages.getGetMessageListResource()), equals(url));
+            });
+            test("Read SMS errors with wrong account", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response(message401, 401, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+
+                var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
+                Future<http.Request> future;
+
+                future = twillio.readSMSList().then((value) => value);
+                expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
+            });
+
+            test("Read SMS List", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response(smsReadListResponse, 200, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+
+                var twillio = new Twillio(_accountSid, _authToken, _apiVersion, mockHttpClient);
+                Future<http.Request> future;
+
+                future = twillio.readSMSList().then((value) => value);
+                expect(future.then((value) => JSON.decode(value.toString()).toString()), completion(matches("this is a test")));
             });
         });
 

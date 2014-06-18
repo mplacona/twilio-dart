@@ -31,7 +31,11 @@ class Twillio {
     }
     
     Future readSMS(String messageSid){
-        return _apiRequest(messages.getGetResource(messageSid)).then((msg) => msg);
+        return _apiRequest(messages.getGetMessageResource(messageSid)).then((msg) => msg);
+    }
+    
+    Future readSMSList(){
+        return _apiRequest(messages.getGetMessageListResource()).then((msg) => msg);
     }
 
 
