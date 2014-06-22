@@ -10,14 +10,14 @@ class Twilio {
     String _authToken;
     String _apiVersion;
     http.Client _httpClient;
-    Messages messages;
+    Messages _messages;
 
     Twilio(String key, String authToken, String version, [http.Client httpClient = null]) {
         this._accountSid = key;
         this._authToken = authToken;
         this._apiVersion = version;
         _httpClient = (httpClient == null) ? new http.Client() : httpClient; 
-        messages = new Messages(_accountSid);
+        _messages = new Messages(_accountSid);
     }
 
     Future sendSMS(String from, String to, String body, [String mediaUrl = null]) {
@@ -27,20 +27,20 @@ class Twilio {
             'To': to,
             'Body': body
         };
-        return _apiRequest(messages.getPostResource(), 'POST', _parameters).then((msg) => msg);
+        return _apiRequest(_messages.getPostResource(), 'POST', _parameters).then((msg) => msg);
     }
     
     Future readSMS(String messageSid){
-        return _apiRequest(messages.getGetMessageResource(messageSid)).then((msg) => msg);
+        return _apiRequest(_messages.getGetMessageResource(messageSid)).then((msg) => msg);
     }
     
     Future readSMSList(){
-        return _apiRequest(messages.getGetMessageListResource()).then((msg) => msg);
+        return _apiRequest(_messages.getGetMessageListResource()).then((msg) => msg);
     }
 
 
     Future _apiRequest(String resource, [String verb = 'GET', Map<String, String> body = null]) {
-        var url = buildBaseUrl(resource).toString();
+        var url = _buildBaseUrl(resource).toString();
         var request = new http.Request(verb, Uri.parse(url));
         request.headers[HttpHeaders.USER_AGENT] = 'twilio-dart';
         if(body != null){
@@ -49,7 +49,7 @@ class Twilio {
         return this._httpClient.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString()));
     }
 
-    String buildBaseUrl(String resource) {
+    String _buildBaseUrl(String resource) {
         return 'https://' + this._accountSid + ':' + this._authToken + '@' + this._baseUri + '/' + this._apiVersion + '/' + resource;
     }
 }
