@@ -1,4 +1,4 @@
-library twillio.test.fixtures.ExpectedMessages;
+library twilio.test.fixtures.ExpectedMessages;
 import 'dart:convert'; 
 
 var smsWrongAccount = JSON.encode({

@@ -1,4 +1,4 @@
-library twillio.test.fixtures.statusMessages;
+library twilio.test.fixtures.statusMessages;
 import 'dart:convert'; 
 
 var message401 = JSON.encode({

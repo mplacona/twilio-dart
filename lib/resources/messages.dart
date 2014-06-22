@@ -1,5 +1,5 @@
-library twillio.Messages; 
-import 'package:twillio_dart/resources/accounts.dart';
+library twilio.Messages; 
+import 'package:twilio_dart/resources/accounts.dart';
 
 class Messages extends Accounts{
     String _resource;
