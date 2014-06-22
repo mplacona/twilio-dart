@@ -1,4 +1,4 @@
-library twillio.Accounts;
+library twilio.Accounts;
 
 class Accounts{
     final resource = "Accounts";

@@ -1,10 +1,10 @@
-library twillio_dart;
+library twilio_dart;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'resources/messages.dart';
-import 'dart:io';
+import 'dart:io'; 
 
-class Twillio {
+class Twilio {
     final _baseUri = "api.twilio.com";
     String _accountSid;
     String _authToken;
@@ -12,7 +12,7 @@ class Twillio {
     http.Client _httpClient;
     Messages messages;
 
-    Twillio(String key, String authToken, String version, [http.Client httpClient = null]) {
+    Twilio(String key, String authToken, String version, [http.Client httpClient = null]) {
         this._accountSid = key;
         this._authToken = authToken;
         this._apiVersion = version;
