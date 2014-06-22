@@ -13,7 +13,11 @@ class Messages extends Accounts{
       return this._resource + extension;
     }
     
-    String getGetResource(String messageSid){
+    String getGetMessageResource(String messageSid){
       return this._resource + "/" + messageSid + extension;
+    }
+    
+    String getGetMessageListResource(){
+        return this._resource + extension;
     }
 }
