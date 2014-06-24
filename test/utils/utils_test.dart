@@ -1,3 +1,5 @@
+library twilio_dart.test.utils.utils_test;
+
 import 'package:unittest/unittest.dart';
 import 'package:twilio_dart/utils/utils.dart';
 import 'package:twilio_dart/resources/accounts.dart';
@@ -8,7 +10,7 @@ import 'package:http/testing.dart';
 
 
 void main() {
-    group('Methods :: ', () {
+    group('URL & HTTP :: ', () {
         var _accountSid = "AC9d3e7fbe4b0d27fa1b5c60146fcb3bea",
                 _authToken = "12345",
                 _apiVersion = "2010-04-01",
@@ -33,7 +35,7 @@ void main() {
         });
         */
 
-        group('Send SMS :: ', () {
+        group('Send SMS URL :: ', () {
             test("New SMS URL is created correctly", () {
                 var accounts = new Accounts().resource;
                 var messages = new Messages(_accountSid);
@@ -43,7 +45,7 @@ void main() {
 
         });
 
-        group('Read SMS :: ', () {
+        group('Read SMS URL :: ', () {
             var _messageSid = "SMb938df8bb21a4b7faf240e5c99e6efbd";
             test("Read SMS URL is created correctly", () {
                 var messages = new Messages(_accountSid);
@@ -52,7 +54,7 @@ void main() {
             });
         });
 
-        group('Read SMS List :: ', () {
+        group('Read SMS List URL :: ', () {
             test("Read SMS List URL is created correctly", () {
                 var messages = new Messages(_accountSid);
                 var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json";
