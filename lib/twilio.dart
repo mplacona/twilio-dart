@@ -2,22 +2,23 @@ library twilio_dart;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'resources/messages.dart';
-import 'dart:io'; 
+import 'utils/utils.dart';
 
 class Twilio {
     final _baseUri = "api.twilio.com";
-    String _accountSid;
-    String _authToken;
-    String _apiVersion;
     http.Client _httpClient;
     Messages _messages;
+    Map<String, String> _auth = new Map<String, String>();
 
     Twilio(String key, String authToken, String version, [http.Client httpClient = null]) {
-        this._accountSid = key;
-        this._authToken = authToken;
-        this._apiVersion = version;
-        _httpClient = (httpClient == null) ? new http.Client() : httpClient; 
-        _messages = new Messages(_accountSid);
+        _auth['accountSid'] = key;
+        _auth['authToken'] = authToken;
+        _auth['apiVersion'] = version;
+        _auth['baseUri'] = _baseUri;
+        this._httpClient = (httpClient == null) ? new http.Client() : httpClient;
+        this._messages = new Messages(key);
+
+
     }
 
     Future sendSMS(String from, String to, String body, [String mediaUrl = null]) {
@@ -27,29 +28,20 @@ class Twilio {
             'To': to,
             'Body': body
         };
-        return _apiRequest(_messages.getPostResource(), 'POST', _parameters).then((msg) => msg);
-    }
-    
-    Future readSMS(String messageSid){
-        return _apiRequest(_messages.getGetMessageResource(messageSid)).then((msg) => msg);
-    }
-    
-    Future readSMSList(){
-        return _apiRequest(_messages.getGetMessageListResource()).then((msg) => msg);
-    }
-
-
-    Future _apiRequest(String resource, [String verb = 'GET', Map<String, String> body = null]) {
-        var url = _buildBaseUrl(resource).toString();
-        var request = new http.Request(verb, Uri.parse(url));
-        request.headers[HttpHeaders.USER_AGENT] = 'twilio-dart';
-        if(body != null){
-            request.bodyFields = body;
+        // If we're trying to send an MMS
+        if (mediaUrl != null) {
+            _parameters.addAll({
+                'media_url': mediaUrl
+            });
         }
-        return this._httpClient.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString()));
+        return apiRequest(_messages.getPostResource(), _httpClient, _auth, 'POST', _parameters).then((msg) => msg);
     }
 
-    String _buildBaseUrl(String resource) {
-        return 'https://' + this._accountSid + ':' + this._authToken + '@' + this._baseUri + '/' + this._apiVersion + '/' + resource;
+    Future readSMS(String messageSid) {
+        return apiRequest(_messages.getGetMessageResource(messageSid), _httpClient, _auth).then((msg) => msg);
+    }
+
+    Future readSMSList() {
+        return apiRequest(_messages.getGetMessageListResource(), _httpClient, _auth).then((msg) => msg);
     }
 }

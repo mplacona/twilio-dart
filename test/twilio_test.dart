@@ -5,9 +5,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'fixtures/status_messages.dart';
 import 'fixtures/expected_messages.dart';
-import 'package:twilio_dart/resources/accounts.dart';
-import 'package:twilio_dart/resources/messages.dart';
-import 'package:http/testing.dart'; 
+import 'package:http/testing.dart';
 
 void main() {
     print("Twilio API implementation Tests!");
@@ -35,18 +33,6 @@ void main() {
 
 
         group('Send SMS :: ', () {
-            
-            /*
-            test("New SMS URL is created correctly", () {
-                var twilio = new Twilio(_accountSid, _authToken, _apiVersion);
-                var accounts = new Accounts().resource;
-                var messages = new Messages(_accountSid);
-                var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json";
-                expect(twilio._buildBaseUrl(messages.getPostResource()), equals(url));
-            });
-            */ 
-
-
             test("Send SMS errors with wrong account", () {
                 var mockHttpClient = new MockClient((request) {
                     return new http.Response(message401, 401, headers: {
@@ -57,7 +43,7 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.sendSMS("+112345678", "+44123456789", "this is a test").then((value) => value);
+                future = twilio.sendSMS("+112345678", "+44123456789", "this is a test");
                 expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
             });
 
@@ -71,23 +57,29 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.sendSMS("+441234567890", "+44123456789", "this is a test").then((value) => value);
+                future = twilio.sendSMS("+441234567890", "+44123456789", "this is a test");
+                expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("SMb938df8bb21a4b7faf240e5c99e6efbd")));
+            });
+
+            test("Send MMS successfuly sent", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response(smsWriteResponse, 200, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+
+                var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
+                Future<http.Request> future;
+
+                future = twilio.sendSMS("+441234567890", "+44123456789", "this is a test", "http://www.example.com/sample.png");
                 expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("SMb938df8bb21a4b7faf240e5c99e6efbd")));
             });
         });
 
         group('Read SMS :: ', () {
             var _messageSid = "SMb938df8bb21a4b7faf240e5c99e6efbd";
-            
-            /*
-            test("Read SMS URL is created correctly", () {
-                var twilio = new Twilio(_accountSid, _authToken, _apiVersion);
-                var messages = new Messages(_accountSid);
-                var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages/SMb938df8bb21a4b7faf240e5c99e6efbd.json";
-                expect(twilio._buildBaseUrl(messages.getGetMessageResource(_messageSid)), equals(url));
-            });
-            */
             test("Read SMS errors with wrong account", () {
+
                 var mockHttpClient = new MockClient((request) {
                     return new http.Response(message401, 401, headers: {
                         'content-type': 'application/json'
@@ -97,7 +89,7 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.readSMS(_messageSid).then((value) => value);
+                future = twilio.readSMS(_messageSid);
                 expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
             });
 
@@ -111,20 +103,12 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.readSMS(_messageSid).then((value) => value);
+                future = twilio.readSMS(_messageSid);
                 expect(future.then((value) => JSON.decode(value.toString())), completion(containsValue("this is a test")));
             });
         });
-        
+
         group('Read SMS List :: ', () {
-            /*
-            test("Read SMS List URL is created correctly", () {
-                var twilio = new Twilio(_accountSid, _authToken, _apiVersion);
-                var messages = new Messages(_accountSid);
-                var url = "https://AC9d3e7fbe4b0d27fa1b5c60146fcb3bea:12345@api.twilio.com/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json";
-                expect(twilio._buildBaseUrl(messages.getGetMessageListResource()), equals(url));
-            });
-            */
             test("Read SMS errors with wrong account", () {
                 var mockHttpClient = new MockClient((request) {
                     return new http.Response(message401, 401, headers: {
@@ -135,7 +119,7 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.readSMSList().then((value) => value);
+                future = twilio.readSMSList();
                 expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
             });
 
@@ -149,7 +133,7 @@ void main() {
                 var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
                 Future<http.Request> future;
 
-                future = twilio.readSMSList().then((value) => value);
+                future = twilio.readSMSList();
                 expect(future.then((value) => JSON.decode(value.toString()).toString()), completion(matches("this is a test")));
             });
         });
