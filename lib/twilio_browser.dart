@@ -1,21 +1,21 @@
-library twilio_dart_cli;
-import 'package:http/http.dart' as http;
+library twilio_dart_browser;
+import 'package:http/browser_client.dart' as http;
 import 'dart:async';
 import 'resources/messages.dart';
 import 'utils/utils.dart';
 
 class Twilio {
     final _baseUri = "api.twilio.com";
-    http.Client _httpClient;
+    http.BrowserClient _httpClient;
     Messages _messages;
     Map<String, String> _auth = new Map<String, String>();
 
-    Twilio(String key, String authToken, String version, [http.Client httpClient = null]) {
+    Twilio(String key, String authToken, String version, [http.BrowserClient httpClient = null]) {
         _auth['accountSid'] = key;
         _auth['authToken'] = authToken;
         _auth['apiVersion'] = version;
         _auth['baseUri'] = _baseUri;
-        this._httpClient = (httpClient == null) ? new http.Client() : httpClient;
+        this._httpClient = (httpClient == null) ? new http.BrowserClient() : httpClient;
         this._messages = new Messages(key);
 
 
