@@ -1,4 +1,4 @@
-[![Build Status](https://drone.io/bitbucket.org/mplacona/twillio-dart/status.png)](https://drone.io/bitbucket.org/mplacona/twillio-dart/latest)
+[![Build Status](https://drone.io/github.com/mplacona/twilio-dart/status.png)](https://drone.io/github.com/mplacona/twilio-dart/latest)
 
 # Twilio Wrapper for Dart
 ---
