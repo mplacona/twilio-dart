@@ -1,8 +1,7 @@
 library twilio.utils.utils;
-
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'dart:io';
+import 'http_headers.dart';
 
 Future apiRequest(String resource, http.Client httpClient, Map auth, [String verb = 'GET', Map<String, String> body = null]) {
     var url = buildAuthUrl(resource, auth).toString();

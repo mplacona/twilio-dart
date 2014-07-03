@@ -4,9 +4,6 @@ import 'package:unittest/unittest.dart';
 import 'package:twilio_dart/utils/utils.dart';
 import 'package:twilio_dart/resources/accounts.dart';
 import 'package:twilio_dart/resources/messages.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
-import 'package:http/testing.dart';
 
 
 void main() {
@@ -21,7 +18,7 @@ void main() {
         _auth['apiVersion'] = _apiVersion;
         _auth['baseUri'] = _baseUri;
 
-        // This needs fixing
+        // This is foobar and needs fixing
         /*
         group('Http Request', () {
             var mockHttpClient = new MockClient((request) {
