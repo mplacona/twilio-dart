@@ -12,3 +12,4 @@ packages
 web/out/*
 .DS_Store
 *.lock
+/build/*
