@@ -3,7 +3,7 @@ main() {
     var key = "your_twilio_key";
     var authToken = "your_auth_token";
     var version = "2010-04-01";
-    //create a new twillio object
+    //create a new twilio object
     Twilio twilio = new Twilio(key, authToken, version);
 
     // Send SMS for LOLZ
