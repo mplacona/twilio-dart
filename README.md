@@ -26,7 +26,7 @@ var version = "2010-04-01";
 Twilio twilio = new Twilio(key, authToken, version);
 ```
 
-> And this will allow you access o any of the currently available methods on this wrapper (more on this later)
+> And this will allow you access to any of the currently available methods on this wrapper (more on this later)
 
 ### [Sending an SMS message](id:sending)
 * Create a new Twilio object as described in [Getting Started](#getting_started).
@@ -40,12 +40,12 @@ var body = "Look ma! Dart can now send SMS's in under 15 lines";
 ```
 * Send the message away!
 ```dart
-twilio.sendSMS(from, to, body).then((response) => print("Your message has been sent!")).catchError((error) => print(error));
+twilio.sendSMS(from, to, body).then((response) => print("Your message has been sent!")).catchError(print);
 ```
 > You can also turn your SMS message into an [MMS](http://en.wikipedia.org/wiki/Multimedia_Messaging_Service) message by including an attachment with it. The API accepts a 4th argument in the form of a URL pointing to the image you would like to send.
 
 ### [Reading a message](id:reading)
-Any messages sent via Twilio are stored, so they can be later on retrieved. But most importantly, your account can also receive messages, and you need a way to retrieve it don't you?
+Any messages sent via Twilio are stored, so they can be later retrieved. But most importantly, your account can also receive messages, and you need a way to retrieve it, don't you?
 
 The same Twilio object you created in Getting Started](#getting_started) can now be used to retrieve any messages by its Twilio ID.
 
