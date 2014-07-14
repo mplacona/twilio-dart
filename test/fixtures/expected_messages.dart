@@ -1,5 +1,5 @@
 library twilio.test.fixtures.ExpectedMessages;
-import 'dart:convert'; 
+import 'dart:convert';
 
 var smsWrongAccount = JSON.encode({
     "code": 20003,
@@ -7,6 +7,20 @@ var smsWrongAccount = JSON.encode({
     "message": "Authenticate",
     "more_info": "https://www.twilio.com/docs/errors/20003",
     "status": 401
+});
+
+var smsWrongFrom = JSON.encode({
+    "code": 21212,
+    "message": "The 'From' number +112345678 is not a valid phone number or shortcode.",
+    "more_info": "https://www.twilio.com/docs/errors/21212",
+    "status": 400
+});
+
+var smsReadWrongAccount = JSON.encode({
+    "code": 20404,
+    "message": "The requested resource /2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3be/Messages/SMd9390361a08a9138b256a73804f233e9.json was not found",
+    "more_info": "https://www.twilio.com/docs/errors/20404",
+    "status": 404
 });
 
 var smsReadResponse = JSON.encode({

@@ -36,8 +36,9 @@ void main() {
 
         group('Send SMS :: ', () {
             test("Send SMS errors with wrong account", () {
+
                 var mockHttpClient = new MockClient((request) {
-                    return new http.Response(message401, 401, headers: {
+                    return new http.Response(smsWrongAccount, 400, headers: {
                         'content-type': 'application/json'
                     });
                 });
@@ -46,7 +47,37 @@ void main() {
                 Future<http.Request> future;
 
                 future = twilio.sendSMS("+112345678", "+44123456789", "this is a test");
-                expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
+                expect(future, throwsArgumentError);
+
+            });
+
+            test("Send SMS errors with wrong 'From' number", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response(smsWrongFrom, 400, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+
+                var twilio = new Twilio(_accountSid, _authToken, _apiVersion);
+                Future<http.Request> future;
+
+                future = twilio.sendSMS("+112345678", "+44123456789", "this is a test");
+                expect(future, throwsArgumentError);
+
+            });
+
+            test("Send SMS not owned by the account", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response(smsWrongFrom, 400, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+
+                var twilio = new Twilio(_accountSid, _authToken, _apiVersion);
+                Future<http.Request> future;
+
+                future = twilio.sendSMS("+15005550007", "+44123456789", "this is a test");
+                expect(future, throwsArgumentError);
             });
 
             test("Send SMS successfuly sent", () {
@@ -83,7 +114,7 @@ void main() {
             test("Read SMS errors with wrong account", () {
 
                 var mockHttpClient = new MockClient((request) {
-                    return new http.Response(message401, 401, headers: {
+                    return new http.Response(smsReadWrongAccount, 401, headers: {
                         'content-type': 'application/json'
                     });
                 });
@@ -92,7 +123,7 @@ void main() {
                 Future<http.Request> future;
 
                 future = twilio.readSMS(_messageSid);
-                expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
+                expect(future, throwsArgumentError);
             });
 
             test("Read SMS", () {
@@ -122,7 +153,7 @@ void main() {
                 Future<http.Request> future;
 
                 future = twilio.readSMSList();
-                expect(future.then((value) => JSON.decode(value.toString())), completion(equals(JSON.decode(smsWrongAccount))));
+                expect(future, throwsArgumentError);
             });
 
             test("Read SMS List", () {
