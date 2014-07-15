@@ -4,6 +4,9 @@ import 'package:unittest/unittest.dart';
 import 'package:twilio_dart/utils/utils.dart';
 import 'package:twilio_dart/resources/accounts.dart';
 import 'package:twilio_dart/resources/messages.dart';
+import 'package:http/testing.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
 
 void main() {
@@ -19,18 +22,23 @@ void main() {
         _auth['baseUri'] = _baseUri;
 
         // This is foobar and needs fixing
-        /*
-        group('Http Request', () {
-            var mockHttpClient = new MockClient((request) {
-                return new http.Response("something will always return", 200, headers: {
-                    'content-type': 'application/json'
+
+        group('Http Request :: ', () {
+            test("Mocked always returns 200", () {
+                var mockHttpClient = new MockClient((request) {
+                    return new http.Response("something will always return", 200, headers: {
+                        'content-type': 'application/json'
+                    });
+                });
+                var resource = "http://iama200.com";
+                Future<http.Response> future = apiRequest(resource, mockHttpClient, _auth);
+                future.then((value) {
+                    expect(value, equals("something will always return"));
                 });
             });
-            var resource = "http://iama200.com";
-            Future<http.Request> future = apiRequest(resource, mockHttpClient, _auth);
-            expect(future.then((value) => value.toString()), completion(equals("something will always return")));
+
         });
-        */
+
 
         group('Send SMS URL :: ', () {
             test("New SMS URL is created correctly", () {
