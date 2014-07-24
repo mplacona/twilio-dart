@@ -1,5 +1,5 @@
 name: twilio_dart
-version: 0.0.5
+version: 0.0.6
 author: Marcos Placona <hi@placona.co.uk>
 description: An implementation of the Twilio API for Dart.
 homepage: http://mplacona.github.io/twilio-dart
