@@ -1,6 +1,6 @@
 library twilio_dart.test.twilio_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:twilio_dart/twilio.dart';
 
 void main() {

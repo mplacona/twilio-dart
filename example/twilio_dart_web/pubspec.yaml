@@ -1,4 +1,9 @@
 name: twilio_dart_web
 description: A sample web application
 dependencies:
-  browser: any
+  twilio_dart: 
+    path: ../../
+dev_dependencies:
+  build_web_compilers: ^0.4.0
+  build_runner: ^1.0.0
+  build_test: ^0.10.2

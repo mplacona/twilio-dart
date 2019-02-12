@@ -10,6 +10,7 @@ Future apiRequest(String resource, http.Client httpClient, Map auth, {String ver
     if (body != null && body.isNotEmpty) {
         request.bodyFields = body;
     }
+    print(url);
     return httpClient.send(request).then((response) => response.stream.bytesToString().then((value) => value.toString()));
 }
 

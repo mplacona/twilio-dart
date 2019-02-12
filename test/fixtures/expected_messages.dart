@@ -1,7 +1,7 @@
 library twilio.test.fixtures.ExpectedMessages;
 import 'dart:convert';
 
-var smsWrongAccount = JSON.encode({
+var smsWrongAccount = jsonEncode({
     "code": 20003,
     "detail": "Your AccountSid or AuthToken was incorrect.",
     "message": "Authenticate",
@@ -9,21 +9,21 @@ var smsWrongAccount = JSON.encode({
     "status": 401
 });
 
-var smsWrongFrom = JSON.encode({
+var smsWrongFrom = jsonEncode({
     "code": 21212,
     "message": "The 'From' number +112345678 is not a valid phone number or shortcode.",
     "more_info": "https://www.twilio.com/docs/errors/21212",
     "status": 400
 });
 
-var smsReadWrongAccount = JSON.encode({
+var smsReadWrongAccount = jsonEncode({
     "code": 20404,
     "message": "The requested resource /2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3be/Messages/SMd9390361a08a9138b256a73804f233e9.json was not found",
     "more_info": "https://www.twilio.com/docs/errors/20404",
     "status": 404
 });
 
-var smsReadResponse = JSON.encode({
+var smsReadResponse = jsonEncode({
     'sid': 'SMb938df8bb21a4b7faf240e5c99e6efbd',
     'date_created': 'Sat, 14 Jun 2014 22:56:51 +0000',
     'date_updated': 'Sat, 14 Jun 2014 22:56:57 +0000',
@@ -47,7 +47,7 @@ var smsReadResponse = JSON.encode({
     }
 });
 
-var smsReadListResponse = JSON.encode({
+var smsReadListResponse = jsonEncode({
     'first_page_uri': '/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json?PageSize=50&Page=0',
     'last_page_uri': '/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Messages.json?PageSize=50&Page=0',
     'previous_page_uri': null,
@@ -106,7 +106,7 @@ var smsReadListResponse = JSON.encode({
     'page': 0
 });
 
-var smsWriteResponse = JSON.encode({
+var smsWriteResponse = jsonEncode({
     "sid": "SMb938df8bb21a4b7faf240e5c99e6efbd",
     "date_created": "Sat, 14 Jun 2014 22:56:51 +0000",
     "date_updated": "Sat, 14 Jun 2014 22:56:51 +0000",
@@ -130,7 +130,7 @@ var smsWriteResponse = JSON.encode({
     }
 });
 
-var callListResponse = JSON.encode({
+var callListResponse = jsonEncode({
     "first_page_uri": "/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Calls/.json?PageSize=50&Page=0",
     "last_page_uri": "/2010-04-01/Accounts/AC9d3e7fbe4b0d27fa1b5c60146fcb3bea/Calls/.json?PageSize=50&Page=0",
     "calls": [{

@@ -1,9 +1,10 @@
 import 'package:twilio_dart/twilio.dart';
+import 'dart:io';
 main() {
-    var key = "your_twilio_key";
-    var authToken = "your_auth_token";
+    var key = Platform.environment['TWILIO_KEY'];
+    var authToken = Platform.environment['TWILIO_TOKEN'];
     var version = "2010-04-01";
-    var sid = "SM51eedb1659d748a2ae1a897ca9199fee";
+    var sid = "your_twilio_sid";
 
     //create a new twilio object
     Twilio twilio = new Twilio(key, authToken, version);
