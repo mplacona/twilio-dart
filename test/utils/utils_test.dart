@@ -1,6 +1,6 @@
 library twilio_dart.test.utils.utils_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:twilio_dart/utils/utils.dart';
 import 'package:twilio_dart/resources/accounts.dart';
 import 'package:twilio_dart/resources/messages.dart';
@@ -26,12 +26,14 @@ void main() {
         group('Http Request :: ', () {
             test("Mocked always returns 200", () {
                 var mockHttpClient = new MockClient((request) {
-                    return new http.Response("something will always return", 200, headers: {
-                        'content-type': 'application/json'
-                    });
+                    return new Future<http.Response>.value(
+                      new http.Response("something will always return", 200, headers: {
+                          'content-type': 'application/json'
+                      })
+                    );
                 });
                 var resource = "http://iama200.com";
-                Future<http.Response> future = apiRequest(resource, mockHttpClient, _auth);
+                Future future = apiRequest(resource, mockHttpClient, _auth);
                 future.then((value) {
                     expect(value, equals("something will always return"));
                 });

@@ -1,8 +1,9 @@
 import 'package:twilio_dart/twilio.dart';
 import 'dart:convert';
+import 'dart:io';
 main() {
-    var key = "your_twilio_key";
-    var authToken = "your_auth_token";
+    var key = Platform.environment['TWILIO_KEY'];
+    var authToken = Platform.environment['TWILIO_TOKEN'];
     var version = "2010-04-01";
 
     //create a new twilio object
@@ -11,6 +12,6 @@ main() {
     // Read SMS list
     twilio.readCallsList().then((response) {
         print(response.toString());
-        JSON.decode(response)['calls'].forEach((e) => print(e));
+        jsonDecode(response)['calls'].forEach((e) => print(e));
     }).catchError((error) => print(error.toString()));
 }

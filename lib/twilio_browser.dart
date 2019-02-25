@@ -34,7 +34,7 @@ class Twilio {
                 'media_url': mediaUrl
             });
         }
-        return apiRequest(_messages.getPostResource(), _httpClient, _auth, 'POST', _parameters).then((msg) {
+        return apiRequest(_messages.getPostResource(), _httpClient, _auth, verb: 'POST', body: _parameters).then((msg) {
             return _validator.validateResponse(msg);
         });
     }

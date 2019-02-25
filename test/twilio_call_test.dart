@@ -1,6 +1,6 @@
 library twilio_dart.test.twilio_call_test;
 
-import 'package:unittest/unittest.dart';
+import 'package:test/test.dart';
 import 'package:twilio_dart/twilio.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
@@ -19,13 +19,15 @@ void main() {
             group('List Calls :: ', () {
                 test("Return success", () {
                     var mockHttpClient = new MockClient((request) {
-                        return new http.Response(callListResponse, 200, headers: {
+                        return new Future<http.Response>.value(
+                          new http.Response(callListResponse, 200, headers: {
                             'content-type': 'application/json'
-                        });
+                          })
+                        );
                     });
 
                     var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
-                    Future<http.Request> future;
+                    Future future;
                     future = twilio.readCallsList();
                     expect(future.then((value) => value.toString()), completion(contains('CAcb3d7a3ad6c4195aaaeb882e98eaea31')));
                 });
@@ -33,13 +35,15 @@ void main() {
                 test("Errors with wrong account", () {
                     var _authToken = "something_that_doesnt_exist";
                     var mockHttpClient = new MockClient((request) {
-                        return new http.Response(message401, 401, headers: {
-                            'content-type': 'application/json'
-                        });
+                        return new Future<http.Response>.value(
+                          new http.Response(message401, 401, headers: {
+                              'content-type': 'application/json'
+                          })
+                        );
                     });
 
                     var twilio = new Twilio(_accountSid, _authToken, _apiVersion, mockHttpClient);
-                    Future<http.Request> future;
+                    Future future;
 
                     future = twilio.readCallsList();
                     expect(future, throwsArgumentError);

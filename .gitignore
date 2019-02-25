@@ -13,3 +13,5 @@ web/out/*
 .DS_Store
 *.lock
 /build/*
+.packages
+.dart_tool
